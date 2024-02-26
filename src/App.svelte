@@ -58,4 +58,4 @@
   Reset
 </button>
 
-<div class="font-serif mt-8 text-[#e7bb63]">Made by zummon (Teerapat Anantarattanachai)<br>Something breaks, shows incorrect result. Let me know.</div>
+<div class="font-serif mt-8 text-lime-800">Made by zummon (Teerapat Anantarattanachai)<br>Something breaks, shows incorrect result. Let me know.</div>
