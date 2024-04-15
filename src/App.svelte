@@ -36,9 +36,9 @@
   <span class="text-3xl text-white font-serif">{result[1]}</span>
 </div>
 
-<div class="grid grid-cols-3 divide-x divide-y divide-yellow-600 bg-[#e7bb63] my-4">
+<div class="grid grid-cols-3 bg-[#e7bb63] my-4">
   {#each xo as box, index (index)}
-    <button class="w-20 h-20 text-6xl font-extrabold text-yellow-900 font-mono block {box ? '' : 'hover:bg-yellow-600 focus:bg-yellow-600'}" on:click={() => {
+    <button class="w-20 h-20 text-6xl font-extrabold font-mono block even:border border-yellow-600 {box ? '' : 'hover:bg-yellow-600 focus:bg-yellow-600'} {result[0] != box && result[0] ? 'text-yellow-600':'text-yellow-900'}" disabled={box} on:click={() => {
       if (!box) {
         let x = xo.filter((box) => box == 'x').length
         let o = xo.filter((box) => box == 'o').length
