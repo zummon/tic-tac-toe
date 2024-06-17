@@ -1,34 +1,33 @@
 <script>
-  let xo = ['','','','','','','','','']
-  let result = ['','']
+  let xo = $state(["", "", "", "", "", "", "", "", ""]);
+  let result = $state(["", ""]);
 
-  $: {
-    let prepare = ''
+  $effect(() => {
+    let prepare = "";
     if (xo[0] == xo[3] && xo[3] == xo[6] && xo[0] && xo[3] && xo[6]) {
-      prepare = xo[0]
+      prepare = xo[0];
     } else if (xo[1] == xo[4] && xo[4] == xo[7] && xo[1] && xo[4] && xo[7]) {
-      prepare = xo[1]
+      prepare = xo[1];
     } else if (xo[2] == xo[5] && xo[5] == xo[8] && xo[2] && xo[5] && xo[8]) {
-      prepare = xo[2]
+      prepare = xo[2];
     } else if (xo[0] == xo[4] && xo[4] == xo[8] && xo[0] && xo[4] && xo[8]) {
-      prepare = xo[0]
-
+      prepare = xo[0];
     } else if (xo[0] == xo[1] && xo[1] == xo[2] && xo[0] && xo[1] && xo[2]) {
-      prepare = xo[0]
+      prepare = xo[0];
     } else if (xo[3] == xo[4] && xo[4] == xo[5] && xo[3] && xo[4] && xo[5]) {
-      prepare = xo[3]
+      prepare = xo[3];
     } else if (xo[6] == xo[7] && xo[7] == xo[8] && xo[6] && xo[7] && xo[8]) {
-      prepare = xo[6]
+      prepare = xo[6];
     } else if (xo[2] == xo[4] && xo[4] == xo[6] && xo[2] && xo[4] && xo[6]) {
-      prepare = xo[2]
-    } 
-    
-    if (xo.filter((box) => box).length >= 9 && !prepare) {
-      result = ['' , 'Tie !']
-    } else {
-      result = [prepare, prepare ? 'wins !' : '']
+      prepare = xo[2];
     }
-  }
+
+    if (xo.filter((box) => box).length >= 9 && !prepare) {
+      result = ["", "Tie !"];
+    } else {
+      result = [prepare, prepare ? "wins !" : ""];
+    }
+  });
 </script>
 
 <div class="cursor-default tracking-wider">
@@ -38,24 +37,37 @@
 
 <div class="grid grid-cols-3 bg-[#e7bb63] my-4">
   {#each xo as box, index (index)}
-    <button class="w-20 h-20 text-6xl font-extrabold font-mono block even:border border-yellow-600 {box ? '' : 'hover:bg-yellow-600 focus:bg-yellow-600'} {result[0] != box && result[0] ? 'text-yellow-600':'text-yellow-900'}" disabled={box} on:click={() => {
-      if (!box) {
-        let x = xo.filter((box) => box == 'x').length
-        let o = xo.filter((box) => box == 'o').length
-        if (x > o) {
-          box = 'o'
-        } else {
-          box = 'x'
+    <button
+      class="w-20 h-20 text-6xl font-extrabold font-mono block even:border border-yellow-600 {box
+        ? ''
+        : 'hover:bg-yellow-600 focus:bg-yellow-600'} {result[0] != box && result[0]
+        ? 'text-yellow-600'
+        : 'text-yellow-900'}"
+      disabled={box}
+      onclick={() => {
+        if (!box) {
+          let x = xo.filter((box) => box == "x").length;
+          let o = xo.filter((box) => box == "o").length;
+          if (x > o) {
+            xo[index] = "o";
+          } else {
+            xo[index] = "x";
+          }
         }
-      }
-    }}>{box}</button>
+      }}>{box}</button
+    >
   {/each}
 </div>
 
-<button class="text-3xl text-yellow-600 font-mono" on:click={() => {
-  xo = ['','','','','','','','','']
-}}>
+<button
+  class="text-3xl text-yellow-600 font-mono"
+  onclick={() => {
+    xo = ["", "", "", "", "", "", "", "", ""];
+  }}
+>
   Reset
 </button>
 
-<div class="font-serif mt-8 text-lime-800">Made by zummon (Teerapat Anantarattanachai)<br>Something breaks, shows incorrect result. Let me know.</div>
+<div class="font-serif mt-8 text-lime-800">
+  Made by zummon (Teerapat Anantarattanachai)<br />Something breaks, needs upgrade. Let me know
+</div>
