@@ -1,73 +1,66 @@
 <script>
-  let xo = $state(["", "", "", "", "", "", "", "", ""]);
-  let result = $state(["", ""]);
+  let count = $state(0);
+  let board = $state([
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
+  ]);
+  let ticks = $state([[], [], []]);
 
   $effect(() => {
-    let prepare = "";
-    if (xo[0] == xo[3] && xo[3] == xo[6] && xo[0] && xo[3] && xo[6]) {
-      prepare = xo[0];
-    } else if (xo[1] == xo[4] && xo[4] == xo[7] && xo[1] && xo[4] && xo[7]) {
-      prepare = xo[1];
-    } else if (xo[2] == xo[5] && xo[5] == xo[8] && xo[2] && xo[5] && xo[8]) {
-      prepare = xo[2];
-    } else if (xo[0] == xo[4] && xo[4] == xo[8] && xo[0] && xo[4] && xo[8]) {
-      prepare = xo[0];
-    } else if (xo[0] == xo[1] && xo[1] == xo[2] && xo[0] && xo[1] && xo[2]) {
-      prepare = xo[0];
-    } else if (xo[3] == xo[4] && xo[4] == xo[5] && xo[3] && xo[4] && xo[5]) {
-      prepare = xo[3];
-    } else if (xo[6] == xo[7] && xo[7] == xo[8] && xo[6] && xo[7] && xo[8]) {
-      prepare = xo[6];
-    } else if (xo[2] == xo[4] && xo[4] == xo[6] && xo[2] && xo[4] && xo[6]) {
-      prepare = xo[2];
-    }
-
-    if (xo.filter((box) => box).length >= 9 && !prepare) {
-      result = ["", "Tie !"];
-    } else {
-      result = [prepare, prepare ? "wins !" : ""];
-    }
+    ticks.forEach((tocks, horz) => {
+      tocks.forEach((tock, vert) => {
+        if (count - 5 > tock) {
+          board[horz][vert] = "";
+        }
+      });
+    });
   });
 </script>
 
-<div class="cursor-default tracking-wider">
-  <span class="text-6xl font-mono font-extrabold text-[#e7bb63]">{result[0]}</span>
-  <span class="text-3xl text-white font-serif">{result[1]}</span>
+<div class="tracking-wider text-center font-serif text-3xl">
+  <span class="">Round</span>
+  <span class="font-mono font-extrabold text-yellow-400">{count}</span>
+  <button
+    class="text-yellow-600"
+    onclick={() => {
+      board = [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+      ];
+      ticks = [[], [], []];
+      count = 0;
+    }}
+  >
+    Restart
+  </button>
 </div>
 
-<div class="grid grid-cols-3 bg-[#e7bb63] my-4">
-  {#each xo as box, index (index)}
-    <button
-      class="w-20 h-20 text-6xl font-extrabold font-mono block even:border border-yellow-600 {box
-        ? ''
-        : 'hover:bg-yellow-600 focus:bg-yellow-600'} {result[0] != box && result[0]
-        ? 'text-yellow-600'
-        : 'text-yellow-900'}"
-      disabled={box}
-      onclick={() => {
-        if (!box) {
-          let x = xo.filter((box) => box == "x").length;
-          let o = xo.filter((box) => box == "o").length;
-          if (x > o) {
-            xo[index] = "o";
+<div
+  class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 text-yellow-900 absolute inset-0 w-fit h-fit m-auto z-30"
+>
+  {#each board as boxes, horz}
+    {#each boxes as box, vert}
+      <button
+        class="w-20 h-20 even:border-2 border-yellow-600"
+        disabled={box}
+        onclick={() => {
+          if (count % 2 == 0) {
+            board[horz][vert] = "x";
           } else {
-            xo[index] = "x";
+            board[horz][vert] = "o";
           }
-        }
-      }}>{box}</button
-    >
+          count++;
+          ticks[horz][vert] = count;
+        }}
+      >
+        {box}
+      </button>
+    {/each}
   {/each}
 </div>
 
-<button
-  class="text-3xl text-yellow-600 font-mono"
-  onclick={() => {
-    xo = ["", "", "", "", "", "", "", "", ""];
-  }}
->
-  Reset
-</button>
-
-<div class="font-serif mt-8 text-lime-800">
+<div class="font-serif absolute bottom-0 inset-x-0 text-center">
   Made by zummon (Teerapat Anantarattanachai)<br />Something breaks, needs upgrade. Let me know
 </div>
