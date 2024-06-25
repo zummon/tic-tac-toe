@@ -18,11 +18,12 @@
   });
 </script>
 
-<div class="tracking-wider text-center font-serif text-3xl">
+<div class="tracking-wider text-center font-serif text-2xl">
   <span class="">Round</span>
-  <span class="font-mono font-extrabold text-yellow-400">{count}</span>
+  <span class="font-mono font-extrabold">{count}</span>
   <button
-    class="text-yellow-600"
+    class="border-b-2 border-yellow-400 text-yellow-400 focus:text-yellow-600 hover:text-yellow-600 focus:border-yellow-600 hover:border-yellow-600 transition"
+    disabled={count == 0}
     onclick={() => {
       board = [
         ["", "", ""],
@@ -37,30 +38,27 @@
   </button>
 </div>
 
-<div
-  class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 text-yellow-900 absolute inset-0 w-fit h-fit m-auto z-30"
->
+<div class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 rounded-md">
   {#each board as boxes, horz}
     {#each boxes as box, vert}
+      {@const place = count % 2 == 0 ? "x" : "o"}
       <button
-        class="w-20 h-20 even:border-2 border-yellow-600"
+        class="w-20 h-20 overflow-hidden even:border-2 border-yellow-600 transition {box
+          ? 'text-yellow-900'
+          : 'text-transparent hover:text-yellow-600 focus:text-yellow-600'}"
         disabled={box}
         onclick={() => {
-          if (count % 2 == 0) {
-            board[horz][vert] = "x";
-          } else {
-            board[horz][vert] = "o";
-          }
+          board[horz][vert] = place;
           count++;
           ticks[horz][vert] = count;
         }}
       >
-        {box}
+        {box || place}
       </button>
     {/each}
   {/each}
 </div>
 
-<div class="font-serif absolute bottom-0 inset-x-0 text-center">
+<div class="font-serif text-center">
   Made by zummon (Teerapat Anantarattanachai)<br />Something breaks, needs upgrade. Let me know
 </div>
