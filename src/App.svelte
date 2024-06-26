@@ -6,7 +6,9 @@
     ["", "", ""],
   ]);
   let ticks = $state([[], [], []]);
-  let winner = $state("");
+  let winner = $state([[], [], []]);
+
+  let place = $derived(count % 2 == 0 ? "x" : "o");
 
   $effect(() => {
     ticks.forEach((tocks, horz) => {
@@ -15,10 +17,6 @@
           board[horz][vert] = "";
         }
       });
-      const mark = board[horz][1];
-      if (board[horz][0] == mark && mark == board[horz][2]) {
-        winner = mark;
-      }
     });
   });
 </script>
@@ -27,7 +25,7 @@
   <span class="">Round</span>
   <span class="font-mono font-extrabold">{count}</span>
   <button
-    class="border-b-2 border-yellow-400 text-yellow-400 focus:text-yellow-600 hover:text-yellow-600 focus:border-yellow-600 hover:border-yellow-600 transition"
+    class="underline decoration-2 underline-offset-4 text-yellow-400 focus:text-yellow-600 hover:text-yellow-600 transition disabled:hidden"
     disabled={count == 0}
     onclick={() => {
       board = [
@@ -37,21 +35,20 @@
       ];
       ticks = [[], [], []];
       count = 0;
+      winner = [[], [], []];
     }}
   >
     Restart
   </button><br />
-  {winner}
+  <span class="text-4xl font-extrabold font-mono">{place}</span>
+  <span class="">Turn</span>
 </div>
 
 <div class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 rounded-md">
   {#each board as boxes, horz}
     {#each boxes as box, vert}
-      {@const place = count % 2 == 0 ? "x" : "o"}
       <button
-        class="w-20 h-20 overflow-hidden even:border-2 border-yellow-600 transition {box
-          ? 'text-yellow-900'
-          : 'text-transparent hover:text-yellow-600 focus:text-yellow-600'}"
+        class="w-20 h-20 overflow-hidden even:border-2 border-yellow-600 transition text-yellow-900"
         disabled={box}
         onclick={() => {
           board[horz][vert] = place;
@@ -59,7 +56,7 @@
           ticks[horz][vert] = count;
         }}
       >
-        {box || place}
+        {box}
       </button>
     {/each}
   {/each}
