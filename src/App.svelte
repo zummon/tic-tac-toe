@@ -6,6 +6,7 @@
     ["", "", ""],
   ]);
   let ticks = $state([[], [], []]);
+  let winner = $state("");
 
   $effect(() => {
     ticks.forEach((tocks, horz) => {
@@ -14,6 +15,10 @@
           board[horz][vert] = "";
         }
       });
+      const mark = board[horz][1];
+      if (board[horz][0] == mark && mark == board[horz][2]) {
+        winner = mark;
+      }
     });
   });
 </script>
@@ -35,7 +40,8 @@
     }}
   >
     Restart
-  </button>
+  </button><br />
+  {winner}
 </div>
 
 <div class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 rounded-md">
