@@ -41,14 +41,16 @@
     Restart
   </button><br />
   <span class="text-4xl font-extrabold font-mono">{place}</span>
-  <span class="">Turn</span>
+  <span class="">turn</span>
 </div>
 
 <div class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 rounded-md">
   {#each board as boxes, horz}
     {#each boxes as box, vert}
       <button
-        class="w-20 h-20 overflow-hidden even:border-2 border-yellow-600 transition text-yellow-900"
+        class="w-20 h-20 overflow-hidden even:border-2 border-yellow-600 transition {count - 5 == ticks[horz][vert]
+          ? 'text-yellow-600'
+          : 'text-yellow-900'}"
         disabled={box}
         onclick={() => {
           board[horz][vert] = place;
