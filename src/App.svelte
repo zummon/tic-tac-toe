@@ -6,11 +6,12 @@
     ["", "", ""],
   ]);
   let ticks = $state([[], [], []]);
-  let winner = $state([[], [], []]);
+  let winner = $state({ rows: [[], [], []], cols: [[], [], []], cross: [[], []] });
 
   let place = $derived(count % 2 == 0 ? "x" : "o");
 
   $effect(() => {
+    console.log("unticking");
     ticks.forEach((tocks, horz) => {
       tocks.forEach((tock, vert) => {
         if (count - 5 > tock) {
@@ -35,7 +36,6 @@
       ];
       ticks = [[], [], []];
       count = 0;
-      winner = [[], [], []];
     }}
   >
     Restart
@@ -44,23 +44,26 @@
   <span class="">turn</span>
 </div>
 
-<div class="grid grid-cols-3 text-6xl font-extrabold font-mono bg-yellow-400 rounded-md">
+<div class="text-6xl font-extrabold font-mono bg-yellow-400 border border-yellow-600">
   {#each board as boxes, horz}
-    {#each boxes as box, vert}
-      <button
-        class="w-20 h-20 overflow-hidden even:border-2 border-yellow-600 transition {count - 5 == ticks[horz][vert]
-          ? 'text-yellow-600'
-          : 'text-yellow-900'}"
-        disabled={box}
-        onclick={() => {
-          board[horz][vert] = place;
-          count++;
-          ticks[horz][vert] = count;
-        }}
-      >
-        {box}
-      </button>
-    {/each}
+    <div class="flex">
+      {#each boxes as box, vert}
+        <button
+          class="w-20 h-20 overflow-hidden border border-yellow-600 transition {count - 5 == ticks[horz][vert]
+            ? 'text-yellow-600'
+            : 'text-yellow-900'} {box ? '' : 'hover:bg-yellow-600 focus:bg-yellow-600'}"
+          class:bg-white={false}
+          disabled={box}
+          onclick={() => {
+            board[horz][vert] = place;
+            count++;
+            ticks[horz][vert] = count;
+          }}
+        >
+          {box}
+        </button>
+      {/each}
+    </div>
   {/each}
 </div>
 
