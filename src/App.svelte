@@ -1,12 +1,17 @@
 <script>
+  function struct(pass) {
+    if (pass == "") {
+      return [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+      ];
+    }
+    return [[], [], []];
+  }
   let count = $state(0);
-  let board = $state([
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
-  ]);
-  let ticks = $state([[], [], []]);
-  let winner = $state({ rows: [[], [], []], cols: [[], [], []], cross: [[], []] });
+  let board = $state(struct(""));
+  let ticks = $state(struct());
 
   let place = $derived(count % 2 == 0 ? "x" : "o");
 
@@ -29,12 +34,8 @@
     class="underline decoration-2 underline-offset-4 text-yellow-400 focus:text-yellow-600 hover:text-yellow-600 transition disabled:hidden"
     disabled={count == 0}
     onclick={() => {
-      board = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""],
-      ];
-      ticks = [[], [], []];
+      board = struct("");
+      ticks = struct();
       count = 0;
     }}
   >
@@ -49,11 +50,12 @@
     <div class="flex">
       {#each boxes as box, vert}
         <button
-          class="w-20 h-20 overflow-hidden border border-yellow-600 transition {count - 5 == ticks[horz][vert]
+          class="w-20 h-20 overflow-hidden border border-yellow-600 transition enabled:hover:bg-yellow-600 enabled:focus:bg-yellow-600 {count -
+            5 ==
+          ticks[horz][vert]
             ? 'text-yellow-600'
-            : 'text-yellow-900'} {box ? '' : 'hover:bg-yellow-600 focus:bg-yellow-600'}"
-          class:bg-white={false}
-          disabled={box}
+            : 'text-yellow-900'}"
+          disabled={count - 5 <= ticks[horz][vert]}
           onclick={() => {
             board[horz][vert] = place;
             count++;
@@ -70,3 +72,5 @@
 <div class="font-serif text-center">
   Made by zummon (Teerapat Anantarattanachai)<br />Something breaks, needs upgrade. Let me know
 </div>
+
+Try {board.flatMap((pose) => pose).join("")}
